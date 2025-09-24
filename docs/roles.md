@@ -5,8 +5,8 @@
 - **Product Owner:** Jaime Olarte
 
 # Working Agreements
-- **Comunicación:** Whatsapp, Reuniones presenciales
-- **Ramas**
-- **Daily**
-- **Code Style:**
-- Criterios de aceptación
+- **Comunicación:** Whatsapp < 24h, Reuniones presenciales 90% asistencia
+- **Ramas:** Main, Produccion, Test, <Feature>
+- **Daily:** Martes y Miercoles en la clase y Viernes/Sábado en la tarde 
+- **Code Style:** No comentarios de chat gpt, CammelCase- Prettier
+- **Criterios de aceptación:** 
