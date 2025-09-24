@@ -8,5 +8,5 @@
 - **Comunicación:** Whatsapp < 24h, Reuniones presenciales 90% asistencia
 - **Ramas:** Main, Produccion, Test, <Feature>
 - **Daily:** Martes y Miercoles en la clase y Viernes/Sábado en la tarde 
-- **Code Style:** No comentarios de chat gpt, CammelCase- Prettier
+- **Code Style:** No comentarios de chat gpt, Linter Extension
 - **Criterios de aceptación:** 
