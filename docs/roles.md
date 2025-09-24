@@ -5,7 +5,7 @@
 - **Product Owner:** Jaime Olarte
 
 # Working Agreements
-- **Comunicación:** Whatsapp, Correo, Videollamadas
+- **Comunicación:** Whatsapp, Reuniones presenciales
 - **Ramas**
 - **Daily**
 - **Code Style:**
