@@ -1,0 +1,15 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f2f5fa;
+}

@@ -1,0 +1,15 @@
+.course-section {
+  margin-bottom: 40px;
+}
+
+.course-section h2 {
+  color: #0077ff;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
