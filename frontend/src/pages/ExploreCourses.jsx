@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import Topbar from "../components/Topbar";
 import CourseSection from "../components/CourseSection";
+import Topbar from "../components/Topbar";
 import { getCourses } from "../services/coursesService";
 
 export default function ExploreCourses() {
