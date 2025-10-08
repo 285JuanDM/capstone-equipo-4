@@ -1,15 +1,28 @@
-.course-section {
-  margin-bottom: 40px;
+.decoration {
+  display: flex;
+  gap: 15px;
+}
+
+.decoration svg {
+  width: 40px;
+  height: 40px;
 }
 
 .course-section h2 {
-  color: #0077ff;
-  font-size: 20px;
-  margin-bottom: 16px;
+  background: linear-gradient(15deg, #2563EB, #0891B2);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 1;
 }
 
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(260px, max-content)
+  );
   gap: 20px;
+  justify-content: start;
 }

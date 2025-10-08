@@ -2,13 +2,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  gap: 12px
 }
 
 .search-container {
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  width: 95%;
 }
 
 .topbar svg {
