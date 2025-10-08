@@ -1,31 +1,50 @@
+import { useEffect, useState } from "react";
 import Topbar from "../components/Topbar";
 import CourseSection from "../components/CourseSection";
+import { getCourses } from "../services/coursesService";
 
 export default function ExploreCourses() {
-  const courses = [
-    {
-      title: "Introducción a la programación",
-      level: "Principiante",
-      description: "Aprende los fundamentos de la programación con ejercicios interactivos",
-    },
-    {
-      title: "Lógica de programación",
-      level: "Principiante",
-      description: "Aprende a pensar como un programador desde cero",
-    },
-    {
-      title: "Pensamiento Computacional",
-      level: "Intermedio",
-      description: "Desarrolla habilidades para resolver problemas de forma lógica",
-      progress: 30,
-    },
-  ];
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const data = await getCourses();
+        // Filtramos solo los cursos publicados
+        const published = data.filter(course => course.published);
+        setCourses(published);
+      } catch (error) {
+        console.error("Error obteniendo cursos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
+
+  if (loading) return <p>Cargando cursos...</p>;
 
   return (
     <>
       <Topbar />
-      <CourseSection title="✨ Nuestra recomendación para ti" courses={courses} />
-      <CourseSection title="💙 Comienza tu viaje" courses={courses} />
+      <CourseSection
+        title="💙 Cursos disponibles"
+        courses={courses.map(c => ({
+          title: c.title,
+          level: c.level,
+          description: c.description,
+        }))}
+      />
+      <CourseSection
+        title="💙 Comienza tu viaje"
+        courses={courses.map(c => ({
+          title: c.title,
+          level: c.level,
+          description: c.description,
+        }))}
+      />
     </>
   );
 }
+
