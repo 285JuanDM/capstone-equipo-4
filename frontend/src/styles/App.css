@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+*, ::before, ::after {
+  margin: 0;
+}
+
 .app-container {
   display: flex;
   height: 100vh;
   background-color: #f7f9fc;
-  font-family: "Poppins", sans-serif;
+  flex: 2;
+  font-family: "Nunito", sans-serif;
 }
 
 .main-content {
