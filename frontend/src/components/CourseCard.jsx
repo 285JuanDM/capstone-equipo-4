@@ -3,11 +3,15 @@ import ProgressBar from "./ProgressBar";
 
 export default function CourseCard({ title, level, description, progress }) {
   return (
-    <div className="course-card">
+    <article className="course-card">
       <div className="course-banner"></div>
-      <div className="course-body">
-        <h3>{title}</h3>
-        <span className="course-level">{level}</span>
+
+      <section className="course-body">
+        <div className="course-info">
+          <h3>{title}</h3>
+          <span className="course-level">{level}</span>
+        </div>
+
         <p>{description}</p>
 
         {progress ? (
@@ -15,7 +19,7 @@ export default function CourseCard({ title, level, description, progress }) {
         ) : (
           <button className="course-btn">Inscribirse</button>
         )}
-      </div>
-    </div>
+      </section>
+    </article>
   );
 }

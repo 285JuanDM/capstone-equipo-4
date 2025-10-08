@@ -2,18 +2,19 @@
 
 *, ::before, ::after {
   margin: 0;
+  font-family: "Nunito", sans-serif;
 }
 
 .app-container {
   display: flex;
   height: 100vh;
-  background-color: #f7f9fc;
+  background-color: #F8FDFD;
   flex: 2;
-  font-family: "Nunito", sans-serif;
 }
 
 .main-content {
   flex: 1;
-  padding: 24px;
+  gap: 20px;
+  padding: 50px 40px;
   overflow-y: auto;
 }

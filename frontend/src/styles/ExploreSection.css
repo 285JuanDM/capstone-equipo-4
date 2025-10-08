@@ -1,0 +1,5 @@
+.main-content-explore {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}

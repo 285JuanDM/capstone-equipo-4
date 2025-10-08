@@ -1,8 +1,8 @@
-import { db } from "./utils/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Sidebar from "./components/Sidebar";
 import ExploreCourses from "./pages/ExploreCourses";
 import "./styles/App.css";
+import { db } from "./utils/firebase";
 
 export default function App() {
 
@@ -23,8 +23,3 @@ export default function App() {
     </div>
   );
 }
-
-
-
-
-

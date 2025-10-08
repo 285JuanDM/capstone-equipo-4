@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import Topbar from "../components/Topbar";
 import CourseSection from "../components/CourseSection";
+import Topbar from "../components/Topbar";
 import { getCourses } from "../services/coursesService";
+import "../styles/ExploreSection.css";
 
 export default function ExploreCourses() {
   const [courses, setCourses] = useState([]);
@@ -11,7 +12,6 @@ export default function ExploreCourses() {
     const fetchCourses = async () => {
       try {
         const data = await getCourses();
-        // Filtramos solo los cursos publicados
         const published = data.filter(course => course.published);
         setCourses(published);
       } catch (error) {
@@ -26,25 +26,27 @@ export default function ExploreCourses() {
   if (loading) return <p>Cargando cursos...</p>;
 
   return (
-    <>
+    <main className="main-content-explore">
       <Topbar />
       <CourseSection
-        title="💙 Cursos disponibles"
+        title="Nuestra recomendación para ti"
         courses={courses.map(c => ({
           title: c.title,
           level: c.level,
           description: c.description,
         }))}
+        isFirst
       />
+
       <CourseSection
-        title="💙 Comienza tu viaje"
+        title="Comienza tu viaje"
         courses={courses.map(c => ({
           title: c.title,
           level: c.level,
           description: c.description,
         }))}
       />
-    </>
+    </main>
   );
 }
 
