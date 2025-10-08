@@ -31,6 +31,7 @@ export default function ExploreCourses() {
       <CourseSection
         title="Nuestra recomendación para ti"
         courses={courses.map(c => ({
+          id: c.id,
           title: c.title,
           level: c.level,
           description: c.description,
@@ -41,6 +42,7 @@ export default function ExploreCourses() {
       <CourseSection
         title="Comienza tu viaje"
         courses={courses.map(c => ({
+          id: c.id,
           title: c.title,
           level: c.level,
           description: c.description,
