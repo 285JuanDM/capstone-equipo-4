@@ -1,6 +1,8 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Back, SidebarBook, SidebarTrophy } from "../assets/AppIcons";
+import ProgressBar from "../components/ProgressBar";
 import "../styles/CourseRoadmap.css";
 import { db } from "../utils/firebase";
 
@@ -34,25 +36,40 @@ export default function CourseRoadmap() {
   if (!courseData) return <p>No se encontró el curso.</p>;
 
   return (
-    <div className="roadmap-container">
+    <article className="roadmap-container">
       <a className="back-btn" onClick={() => navigate(-1)}>
-        ← Volver
+        <Back /> Volver
       </a>
 
       <section className="course-header">
-        <div>
+        <div className="course-header-info">
           <span className="course-level">{courseData.level}</span>
           <h1>{courseData.title}</h1>
-          <p>{courseData.description}</p>
+          <p className="course-description">{courseData.description}</p>
           <div className="course-stats">
-            <span>🏆 {courseData.points || 0} puntos</span>
-            <span>📘 {courseData.totalLessons || 0} lecciones</span>
+            <div className="stat-item"> <SidebarTrophy /> {courseData.points || 500} puntos</div>
+            <div className="stat-item"> <SidebarBook /> {courseData.totalLessons || 10} lecciones</div>
+          </div>
+        </div>
+
+        <div className="course-progress-card">
+          <h3>Tu progreso</h3>
+          <ProgressBar progress={courseData.progress || 20} />
+          <div className="stats-details">
+            <div>
+              <p>Lecciones completadas:</p>
+              <strong>{courseData.lessonsCompleted || 2}/{courseData.totalLessons || 10}</strong>
+            </div>
+            <div>
+              <p>Tiempo invertido:</p>
+              <strong>{courseData.timeSpent || "2h 30min"}</strong>
+            </div>
           </div>
         </div>
       </section>
 
-      <h2>Roadmap del curso</h2>
-      <div className="roadmap-content">Contenido del Roadmap</div>
-    </div>
+      <h2 className="roadmap-title">Roadmap del curso</h2>
+      <h1 className="roadmap-content">Contenido del Roadmap</h1>
+    </article>
   );
 }
