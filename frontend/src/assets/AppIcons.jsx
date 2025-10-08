@@ -105,8 +105,8 @@ export function Search() {
           y2="20.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#0062DB" />
-          <stop offset="1" stop-color="#0891B2" />
+          <stop stopColor="#0062DB" />
+          <stop offset="1" stopColor="#0891B2" />
         </linearGradient>
       </defs>
     </svg>

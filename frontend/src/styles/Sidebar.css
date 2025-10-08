@@ -52,6 +52,7 @@
 .profile {
   display: flex;
   align-items: center;
+  cursor: pointer;
   padding: 5px 10px;
   border-radius: 10px;
   gap: 12px;

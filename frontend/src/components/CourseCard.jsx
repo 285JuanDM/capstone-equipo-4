@@ -1,7 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import "../styles/CourseCard.css";
 import ProgressBar from "./ProgressBar";
 
-export default function CourseCard({ title, level, description, progress }) {
+export default function CourseCard({ title, level, description, progress, id }) {
+  const navigate = useNavigate()
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    navigate(`course/${id}`)
+  }
+
   return (
     <article className="course-card">
       <div className="course-banner"></div>
@@ -17,7 +25,7 @@ export default function CourseCard({ title, level, description, progress }) {
         {progress ? (
           <ProgressBar progress={progress} />
         ) : (
-          <button className="course-btn">Inscribirse</button>
+          <button onClick={handleClick} className="course-btn">Inscribirse</button>
         )}
       </section>
     </article>

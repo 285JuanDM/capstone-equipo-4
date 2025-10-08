@@ -3,6 +3,7 @@ import "../styles/CourseSection.css";
 import CourseCard from "./CourseCard";
 
 export default function CourseSection({ title, courses, isFirst }) {
+  console.log("Hola", courses)
   return (
     <section className="course-section">
 
