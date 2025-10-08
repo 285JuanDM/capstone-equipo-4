@@ -26,7 +26,7 @@ export default function ExploreCourses() {
   if (loading) return <p>Cargando cursos...</p>;
 
   return (
-    <main className="main-content-explore">
+    <section className="main-content-explore">
       <Topbar />
       <CourseSection
         title="Nuestra recomendación para ti"
@@ -46,7 +46,7 @@ export default function ExploreCourses() {
           description: c.description,
         }))}
       />
-    </main>
+    </section>
   );
 }
 
