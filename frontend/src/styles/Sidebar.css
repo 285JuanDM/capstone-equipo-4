@@ -102,12 +102,13 @@
 }
 
 .menu-item {
+  width: fit;
   display: flex;
   align-items: center;
   justify-content: start;
   gap: 8px;
   font-size: 18px;
-  padding: 10px 12px;
+  padding: 15px 15px;
   border-radius: 8px;
   font-weight: 550;
   text-decoration: none;

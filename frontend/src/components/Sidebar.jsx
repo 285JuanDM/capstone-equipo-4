@@ -1,37 +1,64 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
 import {
   SidebarBook,
   SidebarHome,
+  SidebarIcon,
   SidebarLibrary,
   SidebarLogout,
   SidebarTrophy,
 } from "../assets/AppIcons";
 import logo from "../assets/Logo.svg";
 import "../styles/Sidebar.css";
+import { SidebarItem } from "./SidebarItem";
 
 export default function Sidebar() {
-  return (
-    <aside className="sidebar">
-      <section className="logo-header">
-        <div className="logo-container">
-          <img src={logo} alt="Logo Dolphi" className="logo-img" />
-        </div>
+  const [isOpen, setIsOpen] = useState(true);
+  const [activeItem, setActiveItem] = useState("Inicio");
 
-        <button className="toggle-btn" aria-label="Ocultar menú">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="#0062DB"
-            className="icon"
+  const handleToggle = () => setIsOpen(!isOpen);
+
+  const sidebarVariants = {
+    open: { width: "16rem" },
+    closed: { width: "5rem" },
+  };
+
+  const menuItems = [
+    { text: "Inicio", icon: <SidebarHome className="icon" /> },
+    { text: "Mis cursos", icon: <SidebarLibrary className="icon" /> },
+    { text: "Explorar cursos", icon: <SidebarBook className="icon" /> },
+    { text: "Logros", icon: <SidebarTrophy className="icon" /> },
+  ];
+
+  return (
+    <motion.aside
+      animate={isOpen ? "open" : "closed"}
+      transition={{ duration: 0.25 }}
+      variants={sidebarVariants}
+      className="sidebar"
+      style={{ alignItems: isOpen ? "" : "center" }}
+    >
+      <section className="logo-header">
+        <motion.div
+          className="logo-container"
+          animate={{
+            opacity: isOpen ? 1 : 0,
+            scale: isOpen ? 1 : 0.8,
+          }}
+          transition={{ duration: 0.25 }}
+          style={{ display: isOpen ? "flex" : "none" }}
+        >
+          <img src={logo} alt="Logo Dolphi" className="logo-img" />
+        </motion.div>
+
+        
+          <button
+            className="toggle-btn"
+            aria-label="Ocultar menú"
+            onClick={handleToggle}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
+            <SidebarIcon className={`toggle-icon ${isOpen ? "open" : "closed"}`} />
+          </button>
       </section>
 
       <section className="profile">
@@ -40,37 +67,35 @@ export default function Sidebar() {
           alt="Avatar"
           className="avatar"
         />
-        <div className="profile-info">
-          <p className="name">Carol Henao</p>
-          <p className="level">Nivel 4</p>
-        </div>
+        {isOpen && (
+          <motion.div
+            className="profile-info"
+          >
+            <p className="name">Carol Henao</p>
+            <p className="level">Nivel 4</p>
+          </motion.div>
+        )}
       </section>
 
       <nav className="menu">
         <div className="menu-items">
-          <a href="/" className="menu-item active">
-            <SidebarHome className="icon" />
-            Inicio
-          </a>
-          <a href="/mis-cursos" className="menu-item">
-            <SidebarLibrary className="icon" />
-            Mis cursos
-          </a>
-          <a href="/explorar" className="menu-item">
-            <SidebarBook className="icon" />
-            Explorar cursos
-          </a>
-          <a href="/ranking" className="menu-item">
-            <SidebarTrophy className="icon" />
-            Ranking
-          </a>
+          {menuItems.map((item) => (
+            <SidebarItem
+              key={item.text}
+              itemText={item.text}
+              icon={item.icon}
+              isOpen={isOpen}
+              active={activeItem === item.text}
+              onClick={() => setActiveItem(item.text)}
+            />
+          ))}
         </div>
 
         <a className="menu-item logout">
           <SidebarLogout className="icon" />
-          Cerrar sesión
+          {isOpen && <span>Cerrar sesión</span>}
         </a>
       </nav>
-    </aside>
+    </motion.aside>
   );
 }
