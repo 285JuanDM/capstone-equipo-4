@@ -20,7 +20,7 @@ export default function Sidebar() {
 
   const sidebarVariants = {
     open: { width: "16rem" },
-    closed: { width: "5rem" },
+    closed: { width: "4rem" },
   };
 
   const menuItems = [

@@ -18,3 +18,13 @@
   padding: 50px 40px;
   overflow-y: auto;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* ocupa toda la pantalla */
+  width: 100%;
+  background-color: #f9fafb; /* opcional, puedes quitarlo si ya hay fondo */
+}
+

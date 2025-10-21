@@ -1,6 +1,7 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { PropagateLoader } from "react-spinners";
 import { Back, SidebarBook, SidebarTrophy } from "../assets/AppIcons";
 import ProgressBar from "../components/ProgressBar";
 import "../styles/CourseRoadmap.css";
@@ -32,7 +33,12 @@ export default function CourseRoadmap() {
     fetchCourse();
   }, [courseId]);
 
-  if (loading) return <p>Cargando curso...</p>;
+  if (loading)
+    return (
+      <div className="loader-container">
+        <PropagateLoader color="#2563EB" size={15} />
+      </div>
+  );
   if (!courseData) return <p>No se encontró el curso.</p>;
 
   return (

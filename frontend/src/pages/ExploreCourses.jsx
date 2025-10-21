@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PropagateLoader } from "react-spinners";
 import CourseSection from "../components/CourseSection";
 import Topbar from "../components/Topbar";
 import { getCourses } from "../services/coursesService";
@@ -23,7 +24,12 @@ export default function ExploreCourses() {
     fetchCourses();
   }, []);
 
-  if (loading) return <p>Cargando cursos...</p>;
+  if (loading)
+  return (
+    <div className="loader-container">
+      <PropagateLoader color="#2563EB" size={15} />
+    </div>
+  );
 
   return (
     <section className="main-content-explore">
