@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import CourseSection from "../components/CourseSection";
-import Filter from "../components/Filter";
+import CourseCard from "../components/CourseCard";
 import Topbar from "../components/Topbar";
+import Filter from "../components/Filter";
 import { getCourses } from "../services/coursesService";
 import { getUserEnrollments } from "../services/enrollmentService";
 import "../styles/ExploreSection.css";
@@ -9,9 +9,12 @@ import "../styles/ExploreSection.css";
 export default function ExploreCourses() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ category: "", level: "" });
-  const [filteredCourses, setFilteredCourses] = useState([]);
   const [enrolledCourses, setEnrolledCourses] = useState(new Set());
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({
+    category: "",
+    level: "",
+  });
 
   // Hardcoded user ID for demonstration
   const userId = "julian.d.alvarado23@gmail.com";
@@ -19,19 +22,16 @@ export default function ExploreCourses() {
   useEffect(() => {
     const fetchCoursesAndEnrollments = async () => {
       try {
-        // Fetch all published courses
+        // Fetch all courses
         const coursesData = await getCourses();
-        const publishedCourses = coursesData.filter((course) => course.published);
-        setCourses(publishedCourses);
-        setFilteredCourses(publishedCourses);
+        setCourses(coursesData);
 
         // Fetch user enrollments
         const enrollments = await getUserEnrollments(userId);
-        const enrolledCourseIds = new Set(enrollments.map(e => e.courseId));
+        const enrolledCourseIds = new Set(enrollments.map((e) => e.courseId));
         setEnrolledCourses(enrolledCourseIds);
-
       } catch (error) {
-        console.error("Error obteniendo cursos o inscripciones:", error);
+        console.error("Error fetching courses or enrollments:", error);
       } finally {
         setLoading(false);
       }
@@ -39,52 +39,35 @@ export default function ExploreCourses() {
     fetchCoursesAndEnrollments();
   }, [userId]);
 
-  const categories = useMemo(() => {
-    const allCategories = courses.map((course) => course.category);
-    return [...new Set(allCategories)];
-  }, [courses]);
-
-  const levels = useMemo(() => {
-    const allLevels = courses.map((course) => course.level);
-    return [...new Set(allLevels)];
-  }, [courses]);
-
-  const handleFilterChange = (filterType, value) => {
-    setFilters((prevFilters) => ({ ...prevFilters, [filterType]: value }));
+  const handleFilterChange = (newFilter) => {
+    setFilters((prevFilters) => ({ ...prevFilters, ...newFilter }));
   };
 
-  useEffect(() => {
-    let tempCourses = [...courses];
-    if (filters.category) {
-      tempCourses = tempCourses.filter((c) => c.category === filters.category);
-    }
-    if (filters.level) {
-      tempCourses = tempCourses.filter((c) => c.level === filters.level);
-    }
-    setFilteredCourses(tempCourses);
-  }, [filters, courses]);
+  const filteredCourses = useMemo(() => {
+    return courses
+      .filter((course) =>
+        course.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+      .filter((course) =>
+        filters.category ? course.category === filters.category : true
+      )
+      .filter((course) => (filters.level ? course.level === filters.level : true));
+  }, [courses, searchTerm, filters]);
 
   if (loading) return <p>Cargando cursos...</p>;
 
   return (
     <section className="main-content-explore">
-      <Topbar />
-      <Filter
-        categories={categories}
-        levels={levels}
-        onFilterChange={handleFilterChange}
-      />
-      <CourseSection
-        title="Resultados"
-        courses={filteredCourses.map((c) => ({
-          id: c.id,
-          title: c.title,
-          level: c.level,
-          description: c.description,
-          isEnrolled: enrolledCourses.has(c.id), // Añadimos la nueva propiedad
-        }))}
-        isFirst
-      />
+      <Topbar onSearch={setSearchTerm} />
+      <Filter onFilterChange={handleFilterChange} />
+      <div className="courses-grid">
+        {filteredCourses.map((course) => (
+          <CourseCard
+            key={course.id}
+            course={{ ...course, isEnrolled: enrolledCourses.has(course.id) }}
+          />
+        ))}
+      </div>
     </section>
   );
 }

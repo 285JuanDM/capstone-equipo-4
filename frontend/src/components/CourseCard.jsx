@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/CourseCard.css";
 import ProgressBar from "./ProgressBar";
 
-export default function CourseCard({ title, level, description, id, isEnrolled }) {
+export default function CourseCard({ course }) {
+  const { title, level, description, id, isEnrolled } = course;
   const navigate = useNavigate();
 
   const handleClick = (e) => {

@@ -1,3 +1,4 @@
+import { Link, useLocation } from "react-router-dom";
 import {
   SidebarBook,
   SidebarHome,
@@ -9,28 +10,19 @@ import logo from "../assets/Logo.svg";
 import "../styles/Sidebar.css";
 
 export default function Sidebar() {
+  const location = useLocation(); // Hook para obtener la ruta actual
+
+  // Helper para determinar si un enlace está activo
+  const isActive = (path) => location.pathname === path;
+
   return (
     <aside className="sidebar">
       <section className="logo-header">
         <div className="logo-container">
           <img src={logo} alt="Logo Dolphi" className="logo-img" />
         </div>
-
         <button className="toggle-btn" aria-label="Ocultar menú">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="#0062DB"
-            className="icon"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          {/* Icono del botón */}
         </button>
       </section>
 
@@ -48,30 +40,30 @@ export default function Sidebar() {
 
       <nav className="menu">
         <div className="menu-items">
-          <a href="/" className="menu-item active">
+          <Link to="/" className={`menu-item ${isActive('/') ? 'active' : ''}`}>
             <SidebarHome className="icon" />
             Inicio
-          </a>
-          <a href="/mis-cursos" className="menu-item">
+          </Link>
+          <Link to="/mis-cursos" className={`menu-item ${isActive('/mis-cursos') ? 'active' : ''}`}>
             <SidebarLibrary className="icon" />
             Mis cursos
-          </a>
-           <a href="/my-progress" className="menu-item">
+          </Link>
+          <Link to="/my-progress" className={`menu-item ${isActive('/my-progress') ? 'active' : ''}`}>
             <SidebarTrophy className="icon" />
             Mi Progreso
-          </a>
-          <a href="/explorar" className="menu-item">
+          </Link>
+          <Link to="/explorar" className={`menu-item ${isActive('/explorar') ? 'active' : ''}`}>
             <SidebarBook className="icon" />
             Explorar cursos
-          </a>
-          <a href="/ranking" className="menu-item">
+          </Link>
+          <Link to="/ranking" className={`menu-item ${isActive('/ranking') ? 'active' : ''}`}>
             <SidebarTrophy className="icon" />
             Ranking
-          </a>
-          <a href="/badges" className="menu-item">  {/* Añadido enlace a Insignias */}
+          </Link>
+          <Link to="/badges" className={`menu-item ${isActive('/badges') ? 'active' : ''}`}>
             <SidebarTrophy className="icon" />
             Mis Insignias
-          </a>
+          </Link>
         </div>
 
         <a className="menu-item logout">

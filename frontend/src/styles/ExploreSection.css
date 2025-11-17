@@ -1,5 +1,6 @@
-.main-content-explore {
-    display: flex;
-    flex-direction: column;
-    gap: 45px;
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
 }
