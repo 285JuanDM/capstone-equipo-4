@@ -5,6 +5,7 @@ import { db } from '../utils/firebase';
 import { markLessonAsCompleted } from '../services/progressService';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import PdfViewer from '../components/PdfViewer';
+import VideoPlayer from '../components/VideoPlayer'; // Importar VideoPlayer
 
 export default function LessonPage() {
   const { courseId, lessonId } = useParams();
@@ -54,6 +55,10 @@ export default function LessonPage() {
       case 'pdf':
         return <PdfViewer url={lessonData.url} />;
       
+      case 'video':
+        // Mostrar el reproductor de vídeo directamente
+        return <VideoPlayer url={lessonData.url} />;
+
       case 'text':
         return <div dangerouslySetInnerHTML={{ __html: lessonData.content }} />;
 
@@ -72,7 +77,6 @@ export default function LessonPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      {/* ¡CORRECCIÓN! Usar navigate(-1) para volver a la página anterior */}
       <button onClick={() => navigate(-1)}>Volver al curso</button>
       <h1>{lessonData.title}</h1>
       

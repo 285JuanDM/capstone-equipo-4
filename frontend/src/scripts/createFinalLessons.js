@@ -17,12 +17,14 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const courseTitle = "Fundamentos de programación";
+
+// Nueva lección de vídeo
 const lessonToAdd = {
-  title: "Introducción: ¿Qué es la programación?",
-  contentType: 'pdf',
-  url: '/lessons/pdfs/Fundamentos-Programacion-Intro.pdf',
-  order: 1,
-  duration: 5, 
+  title: "Qué es un lenguaje de programación",
+  contentType: 'video',
+  url: '/lessons/videos/video2.mp4',
+  order: 3, 
+  duration: 10, // Duración estimada
 };
 
 async function createLesson() {
@@ -52,8 +54,7 @@ async function createLesson() {
     const docRef = await addDoc(lessonsCollection, lessonData);
     console.log(`  -> Lección '${lessonData.title}' creada con éxito (ID: ${docRef.id})`);
 
-    console.log(`
-¡Proceso completado!`);
+    console.log(`\n¡Proceso completado!`);
 
   } catch (error) {
     console.error("Error durante el proceso de creación de la lección:", error);
