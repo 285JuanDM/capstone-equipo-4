@@ -1,22 +1,20 @@
-
 import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc, // Importar getDoc
-  updateDoc,
   arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../utils/firebase";
+import { awardBadgeForCourse } from "./badgeService";
+import { awardPointsForLesson } from "./gamificationService";
 import { getCourseLessons } from "./lessonService";
 
 /**
  * Obtiene el progreso de todos los cursos en los que un usuario está inscrito.
- * @param {string} userId - El ID del usuario.
- * @returns {Promise<Array>} - Una promesa que se resuelve con un array de objetos, 
- * donde cada objeto representa un curso y su progreso.
  */
 export async function getUserProgress(userId) {
   const enrollmentsCollection = collection(db, "enrollments");
@@ -25,7 +23,6 @@ export async function getUserProgress(userId) {
   try {
     const querySnapshot = await getDocs(q);
     if (querySnapshot.empty) {
-      console.log("El usuario no está inscrito en ningún curso.");
       return [];
     }
 
@@ -47,14 +44,12 @@ export async function getUserProgress(userId) {
             progress: progress,
           };
         } else {
-          console.warn(`No se encontró el curso con ID: ${courseId}`);
           return null;
         }
       })
     );
 
-    return progressData.filter(p => p !== null);
-
+    return progressData.filter((p) => p !== null);
   } catch (error) {
     console.error("Error al obtener el progreso del usuario:", error);
     throw new Error("No se pudo obtener el progreso del usuario.");
@@ -81,24 +76,27 @@ export async function markLessonAsCompleted(userId, courseId, lessonId) {
 
     const enrollmentDoc = querySnapshot.docs[0];
     const enrollmentRef = doc(db, "enrollments", enrollmentDoc.id);
+    const enrollmentData = enrollmentDoc.data();
+
+    if (enrollmentData.completedLessons && enrollmentData.completedLessons.includes(lessonId)) {
+      console.log("La lección ya ha sido completada anteriormente.");
+      return { status: "success", progress: enrollmentData.progress || 0 };
+    }
 
     await updateDoc(enrollmentRef, {
       completedLessons: arrayUnion(lessonId),
     });
 
+    await awardPointsForLesson(userId);
+
     const allLessons = await getCourseLessons(courseId);
-    // Se necesita volver a obtener el documento para tener el array actualizado
     const updatedEnrollmentSnap = await getDoc(enrollmentRef);
     const completedLessons = updatedEnrollmentSnap.data().completedLessons || [];
-    
+
     const totalLessons = allLessons.length;
     const completedCount = completedLessons.length;
 
-    if (totalLessons === 0) {
-      return { status: "success", progress: 100 }; // Si no hay lecciones, el progreso es 100%
-    }
-    
-    const newProgress = Math.round((completedCount / totalLessons) * 100);
+    const newProgress = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 100;
 
     await updateDoc(enrollmentRef, {
       progress: newProgress,
@@ -106,11 +104,24 @@ export async function markLessonAsCompleted(userId, courseId, lessonId) {
 
     console.log(`Progreso actualizado para el curso ${courseId}: ${newProgress}%`);
 
+    // Si el progreso llega al 100%, otorga una insignia.
+    if (newProgress === 100) {
+      try {
+        const courseRef = doc(db, "courses", courseId);
+        const courseSnap = await getDoc(courseRef);
+        if (courseSnap.exists()) {
+          const courseTitle = courseSnap.data().title;
+          await awardBadgeForCourse(userId, courseId, courseTitle);
+        }
+      } catch (badgeError) {
+        console.error("Error al intentar otorgar la insignia:", badgeError);
+      }
+    }
+
     return {
       status: "success",
       progress: newProgress,
     };
-
   } catch (error) {
     console.error("Error al marcar la lección como completada:", error);
     return { status: "error", message: error.message };

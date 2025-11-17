@@ -1,30 +1,50 @@
-import React from 'react';
-import '../styles/Ranking.css'; // Crearemos este archivo para los estilos
-
-// Datos hardcodeados de estudiantes
-const hardcodedStudents = [
-  { id: 1, name: 'Carol Henao', points: 1500, avatar: 'https://ui-avatars.com/api/?name=Carol+Henao' },
-  { id: 2, name: 'Julián Alvarado', points: 1350, avatar: 'https://ui-avatars.com/api/?name=Julian+Alvarado' },
-  { id: 3, name: 'Laura Rodríguez', points: 1200, avatar: 'https://ui-avatars.com/api/?name=Laura+Rodriguez' },
-  { id: 4, name: 'Carlos Pérez', points: 1050, avatar: 'https://ui-avatars.com/api/?name=Carlos+Perez' },
-  { id: 5, name: 'Ana Gómez', points: 900, avatar: 'https://ui-avatars.com/api/?name=Ana+Gomez' },
-].sort((a, b) => b.points - a.points); // Ordenar por puntos de mayor a menor
+import React, { useEffect, useState } from 'react';
+import { getRankingData } from '../services/rankingService'; // Importar el servicio
+import '../styles/Ranking.css';
 
 export default function Ranking() {
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchRanking() {
+      try {
+        setLoading(true);
+        const rankingData = await getRankingData();
+        setStudents(rankingData);
+        setError(null);
+      } catch (err) {
+        setError('No se pudo cargar el ranking. Inténtalo de nuevo más tarde.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRanking();
+  }, []); // El array vacío asegura que se ejecute solo una vez
+
   return (
     <div className="ranking-container">
       <h1>Ranking de Estudiantes</h1>
       <p>¡Mira quién lidera la tabla y esfuérzate por llegar a la cima!</p>
-      <ol className="ranking-list">
-        {hardcodedStudents.map((student, index) => (
-          <li key={student.id} className="ranking-item">
-            <span className="rank">{index + 1}</span>
-            <img src={student.avatar} alt={student.name} className="avatar" />
-            <span className="name">{student.name}</span>
-            <span className="points">{student.points} pts</span>
-          </li>
-        ))}
-      </ol>
+
+      {loading && <p>Cargando ranking...</p>}
+      {error && <p className="error-message">{error}</p>}
+
+      {!loading && !error && (
+        <ol className="ranking-list">
+          {students.map((student, index) => (
+            <li key={student.id} className="ranking-item">
+              <span className="rank">{index + 1}</span>
+              <img src={student.avatar} alt={student.name} className="avatar" />
+              <span className="name">{student.name}</span>
+              <span className="points">{student.points} pts</span>
+            </li>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }
