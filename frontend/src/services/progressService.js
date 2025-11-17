@@ -5,6 +5,7 @@ import {
   where,
   getDocs,
   doc,
+  getDoc, // Importar getDoc
   updateDoc,
   arrayUnion,
 } from "firebase/firestore";
@@ -12,16 +13,58 @@ import { db } from "../utils/firebase";
 import { getCourseLessons } from "./lessonService";
 
 /**
- * Marca una lección como completada para un usuario en un curso específico
- * y recalcula el progreso general del curso.
- *
+ * Obtiene el progreso de todos los cursos en los que un usuario está inscrito.
  * @param {string} userId - El ID del usuario.
- * @param {string} courseId - El ID del curso.
- * @param {string} lessonId - El ID de la lección a marcar como completada.
- * @returns {object} Un objeto con el estado de la operación y el progreso actualizado.
+ * @returns {Promise<Array>} - Una promesa que se resuelve con un array de objetos, 
+ * donde cada objeto representa un curso y su progreso.
+ */
+export async function getUserProgress(userId) {
+  const enrollmentsCollection = collection(db, "enrollments");
+  const q = query(enrollmentsCollection, where("userId", "==", userId));
+
+  try {
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) {
+      console.log("El usuario no está inscrito en ningún curso.");
+      return [];
+    }
+
+    const progressData = await Promise.all(
+      querySnapshot.docs.map(async (enrollmentDoc) => {
+        const enrollmentData = enrollmentDoc.data();
+        const courseId = enrollmentData.courseId;
+        const progress = enrollmentData.progress || 0;
+
+        const courseRef = doc(db, "courses", courseId);
+        const courseSnap = await getDoc(courseRef);
+
+        if (courseSnap.exists()) {
+          const courseData = courseSnap.data();
+          return {
+            courseId: courseId,
+            title: courseData.title,
+            imageUrl: courseData.imageUrl,
+            progress: progress,
+          };
+        } else {
+          console.warn(`No se encontró el curso con ID: ${courseId}`);
+          return null;
+        }
+      })
+    );
+
+    return progressData.filter(p => p !== null);
+
+  } catch (error) {
+    console.error("Error al obtener el progreso del usuario:", error);
+    throw new Error("No se pudo obtener el progreso del usuario.");
+  }
+}
+
+/**
+ * Marca una lección como completada para un usuario en un curso específico.
  */
 export async function markLessonAsCompleted(userId, courseId, lessonId) {
-  // 1. Encontrar el documento de inscripción específico.
   const enrollmentCollection = collection(db, "enrollments");
   const q = query(
     enrollmentCollection,
@@ -39,25 +82,24 @@ export async function markLessonAsCompleted(userId, courseId, lessonId) {
     const enrollmentDoc = querySnapshot.docs[0];
     const enrollmentRef = doc(db, "enrollments", enrollmentDoc.id);
 
-    // 2. Añadir la lección al array de lecciones completadas (evitando duplicados).
     await updateDoc(enrollmentRef, {
       completedLessons: arrayUnion(lessonId),
     });
 
-    // 3. Recalcular el progreso.
     const allLessons = await getCourseLessons(courseId);
-    const completedLessons = (await getDocs(q)).docs[0].data().completedLessons || [];
+    // Se necesita volver a obtener el documento para tener el array actualizado
+    const updatedEnrollmentSnap = await getDoc(enrollmentRef);
+    const completedLessons = updatedEnrollmentSnap.data().completedLessons || [];
     
     const totalLessons = allLessons.length;
     const completedCount = completedLessons.length;
 
     if (totalLessons === 0) {
-      throw new Error("El curso no tiene lecciones para calcular el progreso.");
+      return { status: "success", progress: 100 }; // Si no hay lecciones, el progreso es 100%
     }
     
     const newProgress = Math.round((completedCount / totalLessons) * 100);
 
-    // 4. Actualizar el campo de progreso en la inscripción.
     await updateDoc(enrollmentRef, {
       progress: newProgress,
     });
@@ -67,7 +109,6 @@ export async function markLessonAsCompleted(userId, courseId, lessonId) {
     return {
       status: "success",
       progress: newProgress,
-      completedLessons: completedLessons,
     };
 
   } catch (error) {

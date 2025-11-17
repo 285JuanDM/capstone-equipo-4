@@ -56,6 +56,10 @@ export default function Sidebar() {
             <SidebarLibrary className="icon" />
             Mis cursos
           </a>
+           <a href="/my-progress" className="menu-item">
+            <SidebarTrophy className="icon" />
+            Mi Progreso
+          </a>
           <a href="/explorar" className="menu-item">
             <SidebarBook className="icon" />
             Explorar cursos
