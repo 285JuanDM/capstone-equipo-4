@@ -6,23 +6,27 @@ import LessonListItem from "../components/LessonListItem";
 import ProgressBar from "../components/ProgressBar";
 import { enrollInCourse, getUserEnrollments } from "../services/enrollmentService";
 import { getCourseLessons } from "../services/lessonService";
+import { useAuth } from "../contexts/AuthContext.jsx"; // 1. Importar el hook
 import "../styles/CourseRoadmap.css";
 import { db } from "../utils/firebase";
 
 export default function CourseRoadmap() {
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth(); // 2. Obtener el usuario del contexto
   const [courseData, setCourseData] = useState(null);
   const [lessons, setLessons] = useState([]);
   const [enrollmentData, setEnrollmentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEnrolling, setIsEnrolling] = useState(false);
 
-  const userId = "julian.d.alvarado23@gmail.com";
+  // 3. Se elimina el userId hardcodeado
 
   useEffect(() => {
     const fetchCourseData = async () => {
+      if (!user) return; // No hacer nada si no hay usuario
       try {
+        // Fetch de los datos del curso
         const docRef = doc(db, "courses", courseId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -33,10 +37,12 @@ export default function CourseRoadmap() {
           return;
         }
 
-        const enrollments = await getUserEnrollments(userId);
+        // Fetch de la inscripción del usuario actual
+        const enrollments = await getUserEnrollments(user.email);
         const currentEnrollment = enrollments.find(e => e.courseId === courseId);
         setEnrollmentData(currentEnrollment);
 
+        // Fetch de las lecciones del curso
         const courseLessons = await getCourseLessons(courseId);
         setLessons(courseLessons);
 
@@ -47,17 +53,20 @@ export default function CourseRoadmap() {
       }
     };
 
-    if (courseId && userId) {
+    if (courseId && user) {
       fetchCourseData();
+    } else {
+      setLoading(false);
     }
-  }, [courseId, userId]);
+  }, [courseId, user]); // 4. El efecto depende del usuario
 
   const handleEnroll = async () => {
+    if (!user) return; // No permitir inscribirse si no hay usuario
     setIsEnrolling(true);
     try {
-      const result = await enrollInCourse(userId, courseId);
+      const result = await enrollInCourse(user.email, courseId); // 5. Usar el email del usuario
       if (result.status === "success" || result.status === "already_enrolled") {
-        const enrollments = await getUserEnrollments(userId);
+        const enrollments = await getUserEnrollments(user.email);
         const currentEnrollment = enrollments.find(e => e.courseId === courseId);
         setEnrollmentData(currentEnrollment);
       }
@@ -80,12 +89,10 @@ export default function CourseRoadmap() {
       return 'completed';
     }
 
-    // La primera lección siempre está desbloqueada si el usuario está inscrito
     if (index === 0) {
       return 'unlocked';
     }
 
-    // Una lección está desbloqueada si la anterior está completada
     const previousLessonId = lessons[index - 1].id;
     if (completedLessons.includes(previousLessonId)) {
       return 'unlocked';
@@ -119,7 +126,7 @@ export default function CourseRoadmap() {
             </div>
           </div>
           {!isEnrolled ? (
-            <button className="enroll-btn" onClick={handleEnroll} disabled={isEnrolling}>
+            <button className="enroll-btn" onClick={handleEnroll} disabled={isEnrolling || !user}>
               {isEnrolling ? "Inscribiendo..." : "Inscribirme ahora"}
             </button>
           ): null}

@@ -1,18 +1,25 @@
 import { useEffect, useState } from 'react';
 import { getUserProgress } from '../services/progressService';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import '../styles/MyProgress.css'; // Crearemos este archivo para los estilos
 
 export default function MyProgress() {
+  const { user } = useAuth(); // Hook para obtener el usuario del contexto
   const [progress, setProgress] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Hardcoded userId
-  const userId = "julian.d.alvarado23@gmail.com";
-
   useEffect(() => {
+    // Asegurarse de que el objeto user y su email existan
+    if (!user || !user.email) {
+      setLoading(false);
+      return;
+    }
+
     const fetchProgress = async () => {
       try {
-        const userProgress = await getUserProgress(userId);
+        setLoading(true);
+        // Usar el email del usuario logueado dinámicamente
+        const userProgress = await getUserProgress(user.email);
         setProgress(userProgress);
       } catch (error) {
         console.error('Error al obtener el progreso:', error);
@@ -22,7 +29,7 @@ export default function MyProgress() {
     };
 
     fetchProgress();
-  }, [userId]);
+  }, [user]); // El efecto se ejecuta cuando el objeto user cambia
 
   if (loading) {
     return <p>Cargando tu progreso...</p>;

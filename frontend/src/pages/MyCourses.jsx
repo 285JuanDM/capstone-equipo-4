@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { getUserEnrollments } from '../services/enrollmentService';
 import { getCoursesByIds } from '../services/coursesService';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import CourseCard from '../components/CourseCard';
 import '../styles/MyCourses.css';
 
-const TEMP_USER_ID = "julian.d.alvarado23@gmail.com";
-
 export default function MyCourses() {
+  const { user } = useAuth(); // Hook para obtener el usuario del contexto
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Nos aseguramos de que el objeto user y su email existan
+    if (!user || !user.email) {
+      setLoading(false);
+      // No establecemos un error aquí, simplemente no se cargarán cursos si no hay usuario
+      return;
+    }
+
     async function fetchMyCourses() {
       try {
         setLoading(true);
         
-        const enrollments = await getUserEnrollments(TEMP_USER_ID);
+        // Usamos el email del usuario logueado dinámicamente
+        const enrollments = await getUserEnrollments(user.email);
         if (enrollments.length === 0) {
           setCourses([]);
           setLoading(false);
@@ -44,7 +52,7 @@ export default function MyCourses() {
     }
 
     fetchMyCourses();
-  }, []);
+  }, [user]); // El efecto se ejecuta cuando el objeto user cambia
 
   return (
     <div className="my-courses-container">

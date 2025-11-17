@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
-import { onAuthStateChange } from "./services/authService";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
 import Sidebar from "./components/Sidebar";
 import CourseRoadmap from "./pages/CourseRoadmap";
 import ExploreCourses from "./pages/ExploreCourses";
@@ -15,27 +14,23 @@ import SignUp from "./pages/SignUp";
 import "./styles/App.css";
 
 function App() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  return (
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
+  );
+}
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange((user) => {
-      setUser(user);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+function AppRoutes() {
+  const { user, loading } = useAuth();
 
   if (loading) {
     return <div>Loading...</div>; // Or a proper loader component
   }
 
-  return (
-    <Router>
-      {user ? <AuthenticatedApp user={user} /> : <UnauthenticatedApp />}
-    </Router>
-  );
+  return user ? <AuthenticatedApp user={user} /> : <UnauthenticatedApp />;
 }
 
 function AuthenticatedApp({ user }) {

@@ -3,26 +3,32 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import { markLessonAsCompleted } from '../services/progressService';
+import { useAuth } from '../contexts/AuthContext.jsx'; // Importar el hook de autenticación
 
 export default function LessonPage() {
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth(); // Obtener el usuario del contexto
   const [lessonData, setLessonData] = useState(null);
   const [loading, setLoading] = useState(true);
   
-  // Hardcoded userId
-  const userId = "julian.d.alvarado23@gmail.com";
-
   useEffect(() => {
+    // Asegurarse de que el usuario está cargado antes de hacer nada
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+
     const fetchLesson = async () => {
       try {
+        setLoading(true);
         const lessonRef = doc(db, 'lessons', lessonId);
         const lessonSnap = await getDoc(lessonRef);
 
         if (lessonSnap.exists()) {
           setLessonData(lessonSnap.data());
-          // Marcar la lección como completada al cargar la página
-          await markLessonAsCompleted(userId, courseId, lessonId);
+          // Usar el email del usuario logueado para marcar la lección como completada
+          await markLessonAsCompleted(user.email, courseId, lessonId);
         } else {
           console.error('No se encontró la lección.');
         }
@@ -34,7 +40,7 @@ export default function LessonPage() {
     };
 
     fetchLesson();
-  }, [courseId, lessonId, userId]);
+  }, [courseId, lessonId, user]); // Añadir user a las dependencias
 
   if (loading) {
     return <p>Cargando lección...</p>;

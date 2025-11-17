@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { getUserBadges } from '../services/badgeService';
+import { useAuth } from '../contexts/AuthContext.jsx';
 import '../styles/MyBadges.css';
 
-// Email del usuario hardcodeado temporalmente
-const TEMP_USER_ID = "julian.d.alvarado23@gmail.com";
-
 export default function MyBadges() {
+  const { user } = useAuth(); // Hook para obtener el usuario del contexto
   const [badges, setBadges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!TEMP_USER_ID) {
+    // Nos aseguramos de que el objeto user y su email existan
+    if (!user || !user.email) {
       setLoading(false);
       setError("No se ha podido identificar al usuario.");
       return;
@@ -20,7 +20,8 @@ export default function MyBadges() {
     async function fetchBadges() {
       try {
         setLoading(true);
-        const userBadges = await getUserBadges(TEMP_USER_ID);
+        // Usamos el email del usuario logueado dinámicamente
+        const userBadges = await getUserBadges(user.email);
         setBadges(userBadges);
         setError(null);
       } catch (err) {
@@ -32,7 +33,7 @@ export default function MyBadges() {
     }
 
     fetchBadges();
-  }, []);
+  }, [user]); // El efecto se ejecuta cuando el objeto user cambia
 
   const formatDate = (date) => {
     if (date && date.toDate) {
