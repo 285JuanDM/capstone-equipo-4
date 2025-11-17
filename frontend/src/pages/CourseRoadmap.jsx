@@ -6,31 +6,24 @@ import ProgressBar from "../components/ProgressBar";
 import { enrollInCourse, getUserEnrollments } from "../services/enrollmentService";
 import "../styles/CourseRoadmap.css";
 import { db } from "../utils/firebase";
-import LessonListItem from "../components/LessonListItem"; // Importamos el nuevo componente
+import LessonListItem from "../components/LessonListItem";
+import { getCourseLessons } from "../services/lessonService";
 
 export default function CourseRoadmap() {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const [courseData, setCourseData] = useState(null);
+  const [lessons, setLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isEnrolled, setIsEnrolled] = useState(false);
   const [isEnrolling, setIsEnrolling] = useState(false);
 
   const userId = "julian.d.alvarado23@gmail.com";
 
-  // Datos de ejemplo para las lecciones
-  const mockLessons = [
-    { id: 1, title: "Introducción al Curso", contentType: "video", duration: 5 },
-    { id: 2, title: "Configuración del Entorno", contentType: "video", duration: 15 },
-    { id: 3, title: "Lectura: Conceptos Básicos de React", contentType: "text", duration: 10 },
-    { id: 4, title: "Creando tu Primer Componente", contentType: "video", duration: 25 },
-    { id: 5, title: "Manejo del Estado con Hooks", contentType: "video", duration: 20 },
-    { id: 6, title: "Lectura: El Ciclo de Vida", contentType: "text", duration: 15 },
-  ];
-
   useEffect(() => {
-    const fetchCourseAndEnrollment = async () => {
+    const fetchCourseData = async () => {
       try {
+        // Obtener datos del curso
         const docRef = doc(db, "courses", courseId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -41,22 +34,25 @@ export default function CourseRoadmap() {
           return;
         }
 
+        // Obtener estado de inscripción
         const enrollments = await getUserEnrollments(userId);
-        const isUserEnrolled = enrollments.some(
-          (enrollment) => enrollment.courseId === courseId
-        );
-        setIsEnrolled(isUserEnrolled);
+        setIsEnrolled(enrollments.some(e => e.courseId === courseId));
+
+        // Obtener lecciones del curso
+        const courseLessons = await getCourseLessons(courseId);
+        setLessons(courseLessons);
+
       } catch (err) {
-        console.error("Error al obtener curso o inscripción:", err);
+        console.error("Error al obtener los datos del curso:", err);
       } finally {
         setLoading(false);
       }
     };
 
     if (courseId && userId) {
-      fetchCourseAndEnrollment();
+      fetchCourseData();
     }
-  }, [courseId, userId]);
+  }, [courseId, userId, isEnrolled]);
 
   const handleEnroll = async () => {
     setIsEnrolling(true);
@@ -91,12 +87,10 @@ export default function CourseRoadmap() {
               <SidebarTrophy /> {courseData.points || 500} puntos
             </div>
             <div className="stat-item">
-              <SidebarBook /> {courseData.totalLessons || 10} lecciones
+              <SidebarBook /> {lessons.length} lecciones
             </div>
           </div>
-          {isEnrolled ? (
-            <p className="enrolled-message">Ya estás inscrito en este curso.</p>
-          ) : (
+          {!isEnrolled ? (
             <button
               className="enroll-btn"
               onClick={handleEnroll}
@@ -104,37 +98,40 @@ export default function CourseRoadmap() {
             >
               {isEnrolling ? "Inscribiendo..." : "Inscribirme ahora"}
             </button>
-          )}
+          ): null}
         </div>
 
-        <div className="course-progress-card">
-          <h3>Tu progreso</h3>
-          <ProgressBar progress={courseData.progress || 20} />
-          <div className="stats-details">
-            <div>
-              <p>Lecciones completadas:</p>
-              <strong>
-                {courseData.lessonsCompleted || 2}/
-                {courseData.totalLessons || 10}
-              </strong>
-            </div>
-            <div>
-              <p>Tiempo invertido:</p>
-              <strong>{courseData.timeSpent || "2h 30min"}</strong>
+        {isEnrolled && (
+          <div className="course-progress-card">
+            <h3>Tu progreso</h3>
+            <ProgressBar progress={courseData.progress || 0} />
+            <div className="stats-details">
+              <div>
+                <p>Lecciones completadas:</p>
+                <strong>
+                  {courseData.lessonsCompleted || 0}/{lessons.length}
+                </strong>
+              </div>
+              <div>
+                <p>Tiempo invertido:</p>
+                <strong>{courseData.timeSpent || "0min"}</strong>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </section>
 
       <h2 className="roadmap-title">Roadmap del curso</h2>
       
-      {/* Sección con la lista de lecciones */}
       <section className="roadmap-content">
-        <h3>Contenido del Roadmap</h3>
         <div className="lessons-list">
-          {mockLessons.map((lesson) => (
-            <LessonListItem key={lesson.id} lesson={lesson} />
-          ))}
+          {lessons.length > 0 ? (
+            lessons.map((lesson) => (
+              <LessonListItem key={lesson.id} lesson={lesson} />
+            ))
+          ) : (
+            <p>Aún no hay lecciones en este curso.</p>
+          )}
         </div>
       </section>
     </article>

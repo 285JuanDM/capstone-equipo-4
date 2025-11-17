@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, orderBy, doc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 
 const lessonsCollection = collection(db, 'lessons');
@@ -14,13 +14,13 @@ export async function getCourseLessons(courseId) {
   }
 
   try {
-    // Creamos una referencia al documento del curso
-    const courseRef = `/courses/${courseId}`;
+    // Creamos una referencia de documento real, que es el tipo de dato correcto
+    const courseDocRef = doc(db, 'courses', courseId);
 
-    // Hacemos la consulta para obtener las lecciones filtrando por 'courseRef' y ordenando por 'order'
+    // Hacemos la consulta para obtener las lecciones, comparando la referencia del documento
     const q = query(
       lessonsCollection,
-      where('courseRef', '==', courseRef),
+      where('courseRef', '==', courseDocRef), // La comparación ahora es correcta
       orderBy('order', 'asc')
     );
 
