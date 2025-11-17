@@ -24,7 +24,8 @@ export async function enrollInCourse(userId, courseId) {
       userId: userId,
       courseId: courseId,
       enrolledAt: serverTimestamp(),
-      progress: 0, // Opcional: para seguir el progreso
+      progress: 0, // Progreso inicial
+      completedLessons: [], // Array para guardar las lecciones completadas
     });
     console.log("Inscripción exitosa con ID: ", docRef.id);
     return { status: "success", docId: docRef.id };

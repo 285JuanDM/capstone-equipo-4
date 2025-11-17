@@ -1,21 +1,11 @@
-import { collection, getDocs } from "firebase/firestore";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import CourseRoadmap from "./pages/CourseRoadmap";
 import ExploreCourses from "./pages/ExploreCourses";
+import LessonPage from "./pages/LessonPage";
 import "./styles/App.css";
-import { db } from "./utils/firebase";
 
 export default function App() {
-  async function testFirestore() {
-    const querySnapshot = await getDocs(collection(db, "courses"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
-  }
-
-  testFirestore();
-
   return (
     <Router>
       <div className="app-container">
@@ -23,7 +13,8 @@ export default function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<ExploreCourses />} />
-            <Route path="/course/:courseId" element={<CourseRoadmap />} />
+            <Route path="/courses/:courseId" element={<CourseRoadmap />} />
+            <Route path="/courses/:courseId/lessons/:lessonId" element={<LessonPage />} />
           </Routes>
         </main>
       </div>

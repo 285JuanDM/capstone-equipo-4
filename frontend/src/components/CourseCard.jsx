@@ -7,7 +7,7 @@ export default function CourseCard({ title, level, description, id, isEnrolled }
 
   const handleClick = (e) => {
     e.stopPropagation();
-    navigate(`course/${id}`);
+    navigate(`/courses/${id}`);
   };
 
   return (
