@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { logOut } from "../services/authService";
 import {
   SidebarBook,
   SidebarHome,
@@ -9,11 +10,25 @@ import {
 import logo from "../assets/Logo.svg";
 import "../styles/Sidebar.css";
 
-export default function Sidebar() {
-  const location = useLocation(); // Hook para obtener la ruta actual
+export default function Sidebar({ user }) {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Helper para determinar si un enlace está activo
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   const isActive = (path) => location.pathname === path;
+
+  // Generar el avatar a partir del correo electrónico
+  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    user.email
+  )}&background=random`;
 
   return (
     <aside className="sidebar">
@@ -28,13 +43,13 @@ export default function Sidebar() {
 
       <section className="profile">
         <img
-          src="https://ui-avatars.com/api/?name=Carol+Henao"
+          src={avatarUrl}
           alt="Avatar"
           className="avatar"
         />
         <div className="profile-info">
-          <p className="name">Carol Henao</p>
-          <p className="level">Nivel 4</p>
+          <p className="name">{user.email}</p>
+          <p className="level">Nivel 1</p> {/* Nivel estático por ahora */}
         </div>
       </section>
 
@@ -66,7 +81,7 @@ export default function Sidebar() {
           </Link>
         </div>
 
-        <a className="menu-item logout">
+        <a onClick={handleLogout} className="menu-item logout">
           <SidebarLogout className="icon" />
           Cerrar sesión
         </a>
