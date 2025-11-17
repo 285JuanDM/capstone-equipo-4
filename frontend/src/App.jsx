@@ -2,11 +2,12 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import CourseRoadmap from "./pages/CourseRoadmap";
 import ExploreCourses from "./pages/ExploreCourses";
+import Explore from "./pages/Explore";
 import MyProgress from "./pages/MyProgress";
 import Ranking from "./pages/Ranking";
 import LessonPage from "./pages/LessonPage";
 import MyBadges from "./pages/MyBadges";
-import MyCourses from "./pages/MyCourses"; // Importar MyCourses
+import MyCourses from "./pages/MyCourses";
 import "./styles/App.css";
 
 export default function App() {
@@ -17,7 +18,8 @@ export default function App() {
         <main className="main-content">
           <Routes>
             <Route path="/" element={<ExploreCourses />} />
-            <Route path="/mis-cursos" element={<MyCourses />} /> {/* Añadir ruta de Mis Cursos */}
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/mis-cursos" element={<MyCourses />} />
             <Route path="/my-progress" element={<MyProgress />} />
             <Route path="/ranking" element={<Ranking />} />
             <Route path="/badges" element={<MyBadges />} />

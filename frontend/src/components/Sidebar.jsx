@@ -52,7 +52,7 @@ export default function Sidebar() {
             <SidebarTrophy className="icon" />
             Mi Progreso
           </Link>
-          <Link to="/explorar" className={`menu-item ${isActive('/explorar') ? 'active' : ''}`}>
+          <Link to="/explore" className={`menu-item ${isActive('/explore') ? 'active' : ''}`}>
             <SidebarBook className="icon" />
             Explorar cursos
           </Link>
