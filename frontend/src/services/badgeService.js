@@ -12,7 +12,6 @@ import { db } from "../utils/firebase";
 export async function awardBadgeForCourse(userId, courseId, courseTitle) {
   const badgesCollection = collection(db, "user_badges");
 
-  // 1. Verificar si ya existe una insignia para este usuario y curso
   const q = query(
     badgesCollection,
     where("userId", "==", userId),
@@ -23,10 +22,9 @@ export async function awardBadgeForCourse(userId, courseId, courseTitle) {
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
       console.log(`El usuario ya tiene la insignia para el curso ${courseId}. No se tomarán acciones.`);
-      return; // Si ya tiene la insignia, no se hace nada
+      return;
     }
 
-    // 2. Si no existe, otorgar la nueva insignia
     await addDoc(badgesCollection, {
       userId,
       courseId,
@@ -40,5 +38,30 @@ export async function awardBadgeForCourse(userId, courseId, courseTitle) {
   } catch (error) {
     console.error("Error al otorgar la insignia:", error);
     throw new Error("No se pudo otorgar la insignia.");
+  }
+}
+
+/**
+ * Obtiene todas las insignias de un usuario específico.
+ * @param {string} userId - El ID del usuario.
+ * @returns {Promise<Array>} - Un array con las insignias del usuario.
+ */
+export async function getUserBadges(userId) {
+  const badgesCollection = collection(db, "user_badges");
+  const q = query(badgesCollection, where("userId", "==", userId));
+
+  try {
+    const querySnapshot = await getDocs(q);
+    const badges = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    console.log(`Se encontraron ${badges.length} insignias para el usuario ${userId}.`);
+    return badges;
+
+  } catch (error) {
+    console.error("Error al obtener las insignias del usuario:", error);
+    throw new Error("No se pudo obtener las insignias.");
   }
 }

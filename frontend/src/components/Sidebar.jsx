@@ -68,6 +68,10 @@ export default function Sidebar() {
             <SidebarTrophy className="icon" />
             Ranking
           </a>
+          <a href="/badges" className="menu-item">  {/* Añadido enlace a Insignias */}
+            <SidebarTrophy className="icon" />
+            Mis Insignias
+          </a>
         </div>
 
         <a className="menu-item logout">
