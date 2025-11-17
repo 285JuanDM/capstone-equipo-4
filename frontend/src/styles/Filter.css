@@ -1,0 +1,34 @@
+.filter-container {
+  display: flex;
+  gap: 1.5rem; /* Aumentamos el espacio entre los filtros */
+  margin-bottom: 2rem;
+}
+
+.filter-select {
+  font-family: 'Nunito', sans-serif; /* Aseguramos la fuente correcta */
+  padding: 0.8rem 1rem; /* Hacemos el padding más generoso */
+  border-radius: 10px; /* Bordes más redondeados */
+  border: 1px solid #E0E0E0; /* Un borde más suave */
+  background-color: #FFFFFF; /* Fondo blanco */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil para profundidad */
+  -webkit-appearance: none; /* Quitamos el estilo por defecto en Webkit */
+  -moz-appearance: none; /* Quitamos el estilo por defecto en Firefox */
+  appearance: none; /* Quitamos el estilo por defecto */
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%232C3E50" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Flecha personalizada */
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 3rem; /* Espacio para la flecha */
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.filter-select:hover {
+  border-color: #007BFF; /* Resaltado al pasar el ratón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); /* Sombra más pronunciada */
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #007BFF;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}

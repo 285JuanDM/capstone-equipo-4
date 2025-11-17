@@ -1,0 +1,36 @@
+.lesson-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.lesson-item:hover {
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.lesson-icon {
+  color: #007bff;
+  margin-right: 1.5rem;
+  flex-shrink: 0; /* Evita que el icono se encoja */
+}
+
+.lesson-title {
+  flex-grow: 1;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.lesson-duration {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 500;
+  white-space: nowrap; /* Evita que el texto se parta */
+}
