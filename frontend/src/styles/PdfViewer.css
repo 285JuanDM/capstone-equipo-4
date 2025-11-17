@@ -1,0 +1,33 @@
+.pdf-viewer-container {
+  width: 100%;
+  height: calc(100vh - 200px); /* Ajusta la altura como necesites, restando el header/footer */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden; /* Para que el contenido incrustado no se desborde */
+}
+
+.pdf-embed {
+  border: none; /* Los embeds a veces vienen con bordes por defecto */
+}
+
+.pdf-fallback {
+  display: none; /* Oculto por defecto */
+  text-align: center;
+  padding: 40px;
+}
+
+/*
+  Si el navegador no soporta la etiqueta <embed> para PDFs, 
+  el contenido dentro de .pdf-fallback se mostrará.
+  Este es un truco simple, navegadores modernos suelen soportar embed sin problemas.
+*/
+noembed, noframes {
+  display: block;
+  text-align: center;
+  padding: 20px;
+}
+
+noembed .pdf-fallback,
+noframes .pdf-fallback {
+  display: block; /* Muestra el fallback si no hay soporte */
+}

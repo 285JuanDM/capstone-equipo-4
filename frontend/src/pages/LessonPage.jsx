@@ -3,17 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../utils/firebase';
 import { markLessonAsCompleted } from '../services/progressService';
-import { useAuth } from '../contexts/AuthContext.jsx'; // Importar el hook de autenticación
+import { useAuth } from '../contexts/AuthContext.jsx';
+import PdfViewer from '../components/PdfViewer';
 
 export default function LessonPage() {
   const { courseId, lessonId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth(); // Obtener el usuario del contexto
+  const { user } = useAuth();
   const [lessonData, setLessonData] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
-    // Asegurarse de que el usuario está cargado antes de hacer nada
     if (!user) {
       setLoading(false);
       return;
@@ -26,9 +26,14 @@ export default function LessonPage() {
         const lessonSnap = await getDoc(lessonRef);
 
         if (lessonSnap.exists()) {
-          setLessonData(lessonSnap.data());
-          // Usar el email del usuario logueado para marcar la lección como completada
-          await markLessonAsCompleted(user.email, courseId, lessonId);
+          const data = lessonSnap.data();
+          setLessonData(data);
+          
+          if (data.courseRef && data.courseRef.id === courseId) {
+            await markLessonAsCompleted(user.email, courseId, lessonId);
+          } else {
+            console.warn('La lección no parece corresponder al curso actual.');
+          }
         } else {
           console.error('No se encontró la lección.');
         }
@@ -40,7 +45,22 @@ export default function LessonPage() {
     };
 
     fetchLesson();
-  }, [courseId, lessonId, user]); // Añadir user a las dependencias
+  }, [courseId, lessonId, user]);
+
+  const renderLessonContent = () => {
+    if (!lessonData) return null;
+
+    switch (lessonData.contentType) {
+      case 'pdf':
+        return <PdfViewer url={lessonData.url} />;
+      
+      case 'text':
+        return <div dangerouslySetInnerHTML={{ __html: lessonData.content }} />;
+
+      default:
+        return <p>Este tipo de contenido aún no es soportado o no se ha definido.</p>;
+    }
+  };
 
   if (loading) {
     return <p>Cargando lección...</p>;
@@ -52,10 +72,13 @@ export default function LessonPage() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <button onClick={() => navigate(`/courses/${courseId}`)}>Volver al curso</button>
+      {/* ¡CORRECCIÓN! Usar navigate(-1) para volver a la página anterior */}
+      <button onClick={() => navigate(-1)}>Volver al curso</button>
       <h1>{lessonData.title}</h1>
-      <p>{lessonData.description}</p>
-      {/* Aquí se renderizaría el contenido específico de la lección (video, texto, etc.) */}
+      
+      <section className="lesson-content-container" style={{ marginTop: '2rem' }}>
+        {renderLessonContent()} 
+      </section>
     </div>
   );
 }
