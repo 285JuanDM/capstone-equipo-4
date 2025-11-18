@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { signUp } from '../services/authService';
 import { Link, useNavigate } from 'react-router-dom';
+import { signUp } from '../services/authService';
 import '../styles/Auth.css';
 
 export default function SignUp() {
@@ -15,7 +15,7 @@ export default function SignUp() {
       await signUp(email, password);
       navigate('/'); // Redirect to home page after sign up
     } catch (err) {
-      setError('Failed to create an account. The email may already be in use.');
+      setError('Failed to create an account. The email may already be in use.', err);
     }
   };
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { logIn } from '../services/authService';
 import { Link, useNavigate } from 'react-router-dom';
+import { logIn } from '../services/authService';
 import '../styles/Auth.css';
 
 export default function Login() {
@@ -15,7 +15,7 @@ export default function Login() {
       await logIn(email, password);
       navigate('/'); // Redirect to home page after login
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError('Invalid email or password. Please try again.', err);
     }
   };
 

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { getUserEnrollments } from '../services/enrollmentService';
-import { getCoursesByIds } from '../services/coursesService';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useEffect, useState } from 'react';
 import CourseCard from '../components/CourseCard';
+import { Loading } from '../components/Loading.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { getCoursesByIds } from '../services/coursesService';
+import { getUserEnrollments } from '../services/enrollmentService';
 import '../styles/MyCourses.css';
 
 export default function MyCourses() {
@@ -59,7 +60,7 @@ export default function MyCourses() {
       <h1>Mis Cursos</h1>
       <p>Aquí encontrarás todos los cursos en los que te has inscrito.</p>
 
-      {loading && <p>Cargando tus cursos...</p>}
+      {loading && <Loading />}
       {error && <p className="error-message">{error}</p>}
 
       {!loading && !error && courses.length > 0 && (

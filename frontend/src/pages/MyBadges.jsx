@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Loading } from '../components/Loading.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { getUserBadges } from '../services/badgeService';
 import '../styles/MyBadges.css';
@@ -51,7 +52,7 @@ export default function MyBadges() {
       <h1>Mis Insignias</h1>
       <p>Aquí puedes ver todas las insignias que has ganado por completar cursos.</p>
 
-      {loading && <p>Cargando insignias...</p>}
+      {loading && <Loading />}
       {error && <p className="error-message">{error}</p>}
 
       {!loading && !error && badges.length > 0 && (

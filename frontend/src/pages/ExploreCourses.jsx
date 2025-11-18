@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Filters } from "../assets/AppIcons.jsx";
 import CourseCard from "../components/CourseCard";
 import Filter from "../components/Filter";
+import { Loading } from "../components/Loading.jsx";
 import Topbar from "../components/Topbar";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { getCourses } from "../services/coursesService";
@@ -58,7 +59,7 @@ export default function ExploreCourses() {
       .filter((course) => (filters.level ? course.level === filters.level : true));
   }, [courses, searchTerm, filters]);
 
-  if (loading) return <p>Cargando cursos...</p>;
+  if (loading) return <Loading />;
 
   return (
     <section className="main-content-explore">

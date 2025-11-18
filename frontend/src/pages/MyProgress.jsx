@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Loading } from '../components/Loading.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { getUserProgress } from '../services/progressService';
 import '../styles/MyProgress.css'; // Crearemos este archivo para los estilos
@@ -32,7 +33,7 @@ export default function MyProgress() {
   }, [user]); // El efecto se ejecuta cuando el objeto user cambia
 
   if (loading) {
-    return <p>Cargando tu progreso...</p>;
+    return <Loading />
   }
 
   return (

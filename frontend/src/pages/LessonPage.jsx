@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../utils/firebase';
-import { markLessonAsCompleted } from '../services/progressService';
-import { useAuth } from '../contexts/AuthContext.jsx';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Loading } from '../components/Loading.jsx';
 import PdfViewer from '../components/PdfViewer';
 import VideoPlayer from '../components/VideoPlayer'; // Importar VideoPlayer
+import { useAuth } from '../contexts/AuthContext.jsx';
+import { markLessonAsCompleted } from '../services/progressService';
+import { db } from '../utils/firebase';
 
 export default function LessonPage() {
   const { courseId, lessonId } = useParams();
@@ -68,7 +69,7 @@ export default function LessonPage() {
   };
 
   if (loading) {
-    return <p>Cargando lección...</p>;
+    return <Loading />;
   }
 
   if (!lessonData) {

@@ -16,6 +16,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-feather": "^2.0.10",
+    "react-loading-indicators": "^1.0.1",
     "react-router-dom": "^7.9.3"
   },
   "devDependencies": {

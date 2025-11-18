@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Loading } from '../components/Loading';
 import { getRankingData } from '../services/rankingService'; // Importar el servicio
 import '../styles/Ranking.css';
 
@@ -30,7 +31,7 @@ export default function Ranking() {
       <h1>Ranking de Estudiantes</h1>
       <p>¡Mira quién lidera la tabla y esfuérzate por llegar a la cima!</p>
 
-      {loading && <p>Cargando ranking...</p>}
+      {loading && <Loading />}
       {error && <p className="error-message">{error}</p>}
 
       {!loading && !error && (

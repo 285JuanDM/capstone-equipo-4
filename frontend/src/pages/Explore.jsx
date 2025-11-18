@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import CourseSection from "../components/CourseSection";
+import { Loading } from "../components/Loading.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx"; // 1. Importar el hook
 import { getCourses } from "../services/coursesService";
 import { getUserEnrollments } from "../services/enrollmentService";
-import CourseSection from "../components/CourseSection";
-import { useAuth } from "../contexts/AuthContext.jsx"; // 1. Importar el hook
 import "../styles/ExploreSection.css";
 
 export default function Explore() {
@@ -53,7 +54,7 @@ export default function Explore() {
     return grouped;
   }, [courses, enrolledCourses]);
 
-  if (loading) return <p>Cargando cursos...</p>;
+  if (loading) return <Loading />;
 
   return (
     <section className="main-content-explore">

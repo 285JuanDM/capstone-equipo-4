@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Back, SidebarBook, SidebarTrophy } from "../assets/AppIcons";
 import LessonListItem from "../components/LessonListItem";
+import { Loading } from "../components/Loading.jsx";
 import ProgressBar from "../components/ProgressBar";
+import { useAuth } from "../contexts/AuthContext.jsx"; // 1. Importar el hook
 import { enrollInCourse, getUserEnrollments } from "../services/enrollmentService";
 import { getCourseLessons } from "../services/lessonService";
-import { useAuth } from "../contexts/AuthContext.jsx"; // 1. Importar el hook
 import "../styles/CourseRoadmap.css";
 import { db } from "../utils/firebase";
 
@@ -82,7 +83,7 @@ export default function CourseRoadmap() {
   };
 
   const getLessonStatus = (lessonId, index) => {
-    if (!enrollmentData) return 'locked'; 
+    if (!enrollmentData) return 'locked';
 
     const completedLessons = enrollmentData.completedLessons || [];
     if (completedLessons.includes(lessonId)) {
@@ -101,7 +102,7 @@ export default function CourseRoadmap() {
     return 'locked';
   };
 
-  if (loading) return <p>Cargando curso...</p>;
+  if (loading) return <Loading />;
   if (!courseData) return <p>No se encontró el curso.</p>;
 
   const isEnrolled = !!enrollmentData;
