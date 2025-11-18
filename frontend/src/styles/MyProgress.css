@@ -1,3 +1,9 @@
+.my-progress-container {
+  width: 100%;
+  max-width: 1200px; /* o el ancho máximo que prefieras */
+  box-sizing: border-box; /* IMPORTANTE: incluye padding en el ancho */
+}
+
 .my-progress-container h1 {
   font-size: 2.5rem;
   color: #333;
@@ -6,7 +12,9 @@
 
 .progress-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(390px, 1fr));
+  gap: 1rem;
+  width: 100%; /* Asegura que use todo el ancho disponible */
 }
 
 .course-progress-card {
@@ -16,12 +24,12 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0; /* Previene que el contenido sobrepase el grid */
 }
 
 .course-image {
   width: 100%;
   height: 180px;
-  border-radius: 10px;
   object-fit: cover;
 }
 
@@ -30,11 +38,13 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  flex: 1; /* Hace que ocupe el espacio restante */
 }
 
 .course-info h3 {
   margin: 0;
   font-size: 1.2rem;
+  word-wrap: break-word; /* Evita que títulos largos rompan el layout */
 }
 
 .progress-bar-container {
@@ -42,13 +52,6 @@
   background-color: #e0e0e0;
   border-radius: 4px;
   height: 10px;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #4caf50;
-  border-radius: 4px;
-  transition: width 0.3s ease-in-out;
 }
 
 .course-info p {

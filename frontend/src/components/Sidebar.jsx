@@ -91,22 +91,6 @@ export default function Sidebar({ user }) {
           </Link>
 
           <Link
-            to="/mis-cursos"
-            className={`menu-item ${isActive("/mis-cursos") ? "active" : ""}`}
-          >
-            <SidebarLibrary className="icon" />
-            {isOpen && "Mis cursos"}
-          </Link>
-
-          <Link
-            to="/my-progress"
-            className={`menu-item ${isActive("/my-progress") ? "active" : ""}`}
-          >
-            <SidebarProgress className="icon" />
-            {isOpen && "Mi Progreso"}
-          </Link>
-
-          <Link
             to="/explore"
             className={`menu-item ${isActive("/explore") ? "active" : ""}`}
           >
@@ -115,11 +99,27 @@ export default function Sidebar({ user }) {
           </Link>
 
           <Link
+            to="/mis-cursos"
+            className={`menu-item ${isActive("/mis-cursos") ? "active" : ""}`}
+          >
+            <SidebarLibrary className="icon" />
+            {isOpen && "Mis cursos"}
+          </Link>
+
+          <Link
             to="/ranking"
             className={`menu-item ${isActive("/ranking") ? "active" : ""}`}
           >
             <SidebarTrophy className="icon" />
             {isOpen && "Ranking"}
+          </Link>
+
+          <Link
+            to="/my-progress"
+            className={`menu-item ${isActive("/my-progress") ? "active" : ""}`}
+          >
+            <SidebarProgress className="icon" />
+            {isOpen && "Mi Progreso"}
           </Link>
 
           <Link

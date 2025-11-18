@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Loading } from "../components/Loading";
+import ProgressBar from "../components/ProgressBar";
 import { useAuth } from "../contexts/AuthContext";
 import { getUserEnrollments } from "../services/enrollmentService";
 import { getUserProgress } from "../services/progressService";
@@ -59,7 +60,7 @@ export function HomePage() {
             </p>
             <button
               className="primary-btn"
-              onClick={() => (window.location.href = "/courses")}
+              onClick={() => (window.location.href = "/explore")}
             >
               Explorar cursos
             </button>
@@ -125,15 +126,7 @@ export function HomePage() {
                 />
                 <div className="course-card-body">
                   <h3>{course.title}</h3>
-                  <div className="progress-bar-container">
-                    <div
-                      className="progress-bar"
-                      style={{ width: `${course.progress}%` }}
-                    />
-                  </div>
-                  <p className="course-progress-text">
-                    {course.progress}% completado
-                  </p>
+                  <ProgressBar progress={course.progress} />
                 </div>
               </div>
             ))}
