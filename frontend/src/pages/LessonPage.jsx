@@ -1,11 +1,13 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Back } from '../assets/AppIcons.jsx';
 import { Loading } from '../components/Loading.jsx';
 import PdfViewer from '../components/PdfViewer';
 import VideoPlayer from '../components/VideoPlayer'; // Importar VideoPlayer
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { markLessonAsCompleted } from '../services/progressService';
+import '../styles/LessonPage.css';
 import { db } from '../utils/firebase';
 
 export default function LessonPage() {
@@ -77,12 +79,15 @@ export default function LessonPage() {
   }
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <button onClick={() => navigate(-1)}>Volver al curso</button>
+    <div>
+      <a className="lesson-back-btn" onClick={() => navigate(-1)}>
+        <Back /> Volver
+      </a>
+
       <h1>{lessonData.title}</h1>
       
       <section className="lesson-content-container" style={{ marginTop: '2rem' }}>
-        {renderLessonContent()} 
+        {renderLessonContent()}
       </section>
     </div>
   );

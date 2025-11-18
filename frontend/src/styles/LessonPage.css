@@ -1,0 +1,19 @@
+.lesson-back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    font-size: 20px;
+    color: #222;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s, background 0.2s;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 30px; /* 🔥 SEPARA el botón del contenido */
+}
+
+.lesson-back-btn:hover {
+    background-color: #f2f2f2;
+}

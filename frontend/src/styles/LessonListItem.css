@@ -1,7 +1,7 @@
 .lesson-item {
   display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   padding: 1rem 1.5rem;
   background-color: #fff;
   border: 1px solid #f0f0f0;
@@ -28,15 +28,15 @@
 .lesson-icon {
   margin-right: 1.5rem;
   flex-shrink: 0;
-  color: #007bff; 
+  color: #007bff;
 }
 
 .lesson-icon.completed {
-  color: #28a745; 
+  color: #28a745;
 }
 
 .lesson-icon.locked {
-  color: #6c757d; 
+  color: #6c757d;
 }
 
 .lesson-title {
@@ -50,7 +50,7 @@
   color: #888;
   font-weight: 500;
   white-space: nowrap;
-  margin-left: 1rem; 
+  margin-left: 1rem;
 }
 
 /* Estilos para lecciones bloqueadas */
