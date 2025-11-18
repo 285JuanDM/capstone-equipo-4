@@ -161,3 +161,31 @@
     padding: 30px;
     color: #555;
 }
+
+.enroll-btn {
+    background-color: #0062db;
+    color: white;
+    padding: 14px 26px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+}
+
+.enroll-btn:hover {
+    background-color: #004fb3;
+}
+
+.enroll-btn:active {
+    transform: translateY(1px);
+}
+
+.enroll-btn:disabled {
+    background-color: #9fc4f1;
+    cursor: not-allowed;
+    transform: none;
+}
+

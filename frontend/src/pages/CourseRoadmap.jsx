@@ -126,11 +126,15 @@ export default function CourseRoadmap() {
               <SidebarBook /> {lessons.length} lecciones
             </div>
           </div>
-          {!isEnrolled ? (
-            <button className="enroll-btn" onClick={handleEnroll} disabled={isEnrolling || !user}>
+          {!isEnrolled && (
+            <button
+              className="enroll-btn"
+              onClick={handleEnroll}
+              disabled={isEnrolling || !user}
+            >
               {isEnrolling ? "Inscribiendo..." : "Inscribirme ahora"}
             </button>
-          ): null}
+          )}
         </div>
 
         {isEnrolled && (
