@@ -22,7 +22,7 @@ export default function SignUp() {
   return (
     <div className="auth-container">
       <form onSubmit={handleSignUp} className="auth-form">
-        <h2>Sign Up</h2>
+        <h2>Registro</h2>
         {error && <p className="error-message">{error}</p>}
         <input
           type="email"
@@ -33,14 +33,14 @@ export default function SignUp() {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit">Registrarme</button>
         <p className="auth-switch">
-          Already have an account? <Link to="/login">Log In</Link>
+          ¿Ya tienes una cuenta? <Link to="/login">Ingresa</Link>
         </p>
       </form>
     </div>

@@ -22,7 +22,7 @@ export default function Login() {
   return (
     <div className="auth-container">
       <form onSubmit={handleLogin} className="auth-form">
-        <h2>Log In</h2>
+        <h2>Ingresa</h2>
         {error && <p className="error-message">{error}</p>}
         <input
           type="email"
@@ -33,14 +33,14 @@ export default function Login() {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Contraseña"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Log In</button>
+        <button type="submit">Ingresar</button>
         <p className="auth-switch">
-          Don't have an account? <Link to="/signup">Sign Up</Link>
+          ¿No tienes una cuenta? <Link to="/signup">Regístrate</Link>
         </p>
       </form>
     </div>
