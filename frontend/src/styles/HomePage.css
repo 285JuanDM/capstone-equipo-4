@@ -1,0 +1,159 @@
+.dashboard-container {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* ---------- Header ---------- */
+.dashboard-header h1 {
+  font-size: 2.6rem;
+  margin: 0;
+  color: #1d1d1f;
+}
+
+.dashboard-subtitle {
+  color: #555;
+  margin-top: 6px;
+  font-size: 1.1rem;
+}
+
+/* ---------- New user ---------- */
+.new-user-section {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.welcome-card {
+  background: #fff;
+  padding: 32px;
+  border-radius: 16px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  max-width: 600px;
+}
+
+.primary-btn {
+  margin-top: 1rem;
+  padding: 12px 20px;
+  background: #0062db;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #004fb3;
+}
+
+/* ---------- Stats ---------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.stat-number {
+  margin-top: 10px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #0062db;
+}
+
+/* ---------- Course cards ---------- */
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.course-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.course-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.course-card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- Recommended ---------- */
+.recommended-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.recommended-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  overflow: hidden;
+  padding-bottom: 16px;
+  text-align: center;
+}
+
+.recommended-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-top: 1rem;
+}
+
+.secondary-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: #e7efff;
+  color: #0062db;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.secondary-btn:hover {
+  background: #d7e5ff;
+}
+
+/* Progress bar */
+.progress-bar-container {
+  width: 100%;
+  background: #eee;
+  border-radius: 6px;
+  height: 8px;
+}
+.progress-bar {
+  background: #4caf50;
+  height: 100%;
+  border-radius: 6px;
+}
+.course-progress-text {
+  font-size: 0.9rem;
+  color: #777;
+  text-align: right;
+}

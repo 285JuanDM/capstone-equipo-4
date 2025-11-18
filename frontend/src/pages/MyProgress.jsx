@@ -43,7 +43,7 @@ export default function MyProgress() {
         <div className="progress-list">
           {progress.map(course => (
             <div key={course.courseId} className="course-progress-card">
-              <img src={course.imageUrl} alt={course.title} className="course-image" />
+              <img src={"https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"} alt={course.title} className="course-image" />
               <div className="course-info">
                 <h3>{course.title}</h3>
                 <div className="progress-bar-container">

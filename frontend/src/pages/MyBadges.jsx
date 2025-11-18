@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Medal } from '../assets/AppIcons.jsx';
 import { Loading } from '../components/Loading.jsx';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { getUserBadges } from '../services/badgeService';
@@ -59,7 +60,7 @@ export default function MyBadges() {
         <div className="badges-gallery">
           {badges.map(badge => (
             <div key={badge.id} className="badge-card">
-              <img src={badge.imageUrl} alt={badge.badgeName} className="badge-image" />
+              <Medal />
               <div className="badge-info">
                 <h3 className="badge-name">{badge.badgeName}</h3>
                 <p className="badge-date">Otorgada el: {formatDate(badge.awardedAt)}</p>
