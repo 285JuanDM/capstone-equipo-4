@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getUserProgress } from '../services/progressService';
 import { useAuth } from '../contexts/AuthContext.jsx';
+import { getUserProgress } from '../services/progressService';
 import '../styles/MyProgress.css'; // Crearemos este archivo para los estilos
 
 export default function MyProgress() {
@@ -46,7 +46,7 @@ export default function MyProgress() {
               <div className="course-info">
                 <h3>{course.title}</h3>
                 <div className="progress-bar-container">
-                  <div 
+                  <div
                     className="progress-bar"
                     style={{ width: `${course.progress}%` }}
                   />
@@ -57,7 +57,10 @@ export default function MyProgress() {
           ))}
         </div>
       ) : (
-        <p>Aún no te has inscrito en ningún curso. ¡Explora nuestros cursos y empieza a aprender!</p>
+        <div className="no-courses-message">
+          <h2>¡Aún no te has inscrito en ningún curso!</h2>
+          <p>Explora nuestro catálogo y empieza a aprender hoy mismo.</p>
+        </div>
       )}
     </div>
   );

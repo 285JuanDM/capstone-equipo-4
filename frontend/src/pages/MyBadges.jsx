@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { getUserBadges } from '../services/badgeService';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext.jsx';
+import { getUserBadges } from '../services/badgeService';
 import '../styles/MyBadges.css';
 
 export default function MyBadges() {
@@ -69,8 +69,8 @@ export default function MyBadges() {
       )}
 
       {!loading && !error && badges.length === 0 && (
-        <div className="no-badges-message">
-          <p>¡Aún no has ganado ninguna insignia!</p>
+        <div className="no-courses-message">
+          <h1>¡Aún no has ganado ninguna insignia!</h1>
           <p>Completa un curso al 100% para ganar tu primera insignia y verla aquí.</p>
         </div>
       )}
